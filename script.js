@@ -53,9 +53,8 @@ const userCrud = () => {
     insertUser();
     appendNewButton();
 }
-
+var table = document.createElement ("table");
 const insertUser = () => {
-    table = document.createElement ("table");
     let name = document.getElementById("name-input").value;
     let surname  = document.getElementById("surname-input").value;
     let email  = document.getElementById("email-input").value;
