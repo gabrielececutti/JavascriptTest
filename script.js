@@ -41,7 +41,6 @@ const userCrud = () => {
     appendNewButton();
 }
 
-
 const insertUser = () => {
     table = document.createElement ("table");
     let name = document.getElementById("name-input").value;
@@ -69,26 +68,18 @@ const deleteUser = () => {
     let name = document.getElementById("search-name").value;
     let surname  = document.getElementById("search-username").value;
     let email  = document.getElementById("search-email").value;
-    for (let i = 0; i < table.rows.length; i++) {
-      let row = table.rows[i];
-      let nameCell = row.cells[nameIndex];
-      let surnameCell = row.cells[surnameIndex];
-      let emailCell = row.cells[emailIndex];
-  
-      if (
-        nameCell.textContent === name &&
-        surnameCell.textContent === surname &&
-        emailCell.textContent === email
-      ) {
+    for (var i = 0; i < table.rows.length; i++) {
+        var row = table.rows[i];
+        var nameCell = row.cells[nameIndex];
+        var surnameCell = row.cells[surnameIndex];
+        var emailCell  = row.cells[emailIndex];
+      if ( nameCell.textContent === name && surnameCell.textContent === surname && emailCell.textContent === email) {
         table.deleteRow(i);
-        writeMessage(
-          'status-area',
-          `<p>Hai eliminato l'utente: ${name} ${surname} ${email}</p>`
-        );
-        break;
-      }
+        writeMessage('status-area',`<p>Hai eliminato l'utente: ${name} ${surname} ${email}</p>`);
+        return;
+      } 
     }
-};
+}
 
 const updateUser = () => {
 }
@@ -101,12 +92,13 @@ const searchUser = () => {
         var row = table.rows[i];
         var nameCell = row.cells[nameIndex];
         var surnameCell = row.cells[surnameIndex];
-        var emailCell  = row.Cells[emailIndex];
-        if ( nameCell.value === name && surnameCell.value === surname && emailCell.value === email) {
+        var emailCell  = row.cells[emailIndex];
+        if ( nameCell.textContent === name && surnameCell.textContent === surname && emailCell.textContent === email) {
           writeMessage('status-area', `<p>utente trovato: ${name} ${surname} ${email}</p>`);
-          return true;
+          return;
         }
     }
+    writeMessage('status-area', `<p>utente non trovato</p>`);
 }
 
 const isEmailValid = (email) => {
