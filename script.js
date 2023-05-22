@@ -22,6 +22,19 @@ const writeMessage = (elementId, message, appendMessage) => {
 
 const appendNewButton = () => {
     let btnContainer = document.getElementById("btn-container");
+    if (deleteButton) {
+        deleteButton.removeEventListener("click", deleteUser);
+        deleteButton.remove();
+    }
+    if (updateButton) {
+        updateButton.removeEventListener("click", updateUser);
+        updateButton.remove();
+    }
+    if (searchButton) {
+        searchButton.removeEventListener("click", searchUser);
+        searchButton.remove();
+    }
+    
     deleteButton = document.createElement("button");
     updateButton = document.createElement("button");
     searchButton = document.createElement("button");
@@ -82,7 +95,88 @@ const deleteUser = () => {
 }
 
 const updateUser = () => {
-}
+    let name = document.getElementById("search-name").value;
+    let surname = document.getElementById("search-username").value;
+    let email = document.getElementById("search-email").value;
+  
+    let found = false;
+  
+    for (let i = 0; i < table.rows.length; i++) {
+      let row = table.rows[i];
+      let nameCell = row.cells[nameIndex];
+      let surnameCell = row.cells[surnameIndex];
+      let emailCell = row.cells[emailIndex];
+  
+      if (
+        nameCell.textContent === name &&
+        surnameCell.textContent === surname &&
+        emailCell.textContent === email
+      ) {
+        found = true;
+        let newInputsContainer = document.createElement("div");
+  
+        let newNameLabel = document.createElement("label");
+        newNameLabel.textContent = "New Name:";
+        let newNameInput = document.createElement("input");
+        newNameInput.type = "text";
+        newNameInput.id = "new-name-input";
+        newInputsContainer.appendChild(newNameLabel);
+        newInputsContainer.appendChild(newNameInput);
+  
+        let newSurnameLabel = document.createElement("label");
+        newSurnameLabel.textContent = "New Surname:";
+        let newSurnameInput = document.createElement("input");
+        newSurnameInput.type = "text";
+        newSurnameInput.id = "new-surname-input";
+        newInputsContainer.appendChild(newSurnameLabel);
+        newInputsContainer.appendChild(newSurnameInput);
+  
+        let newEmailLabel = document.createElement("label");
+        newEmailLabel.textContent = "New Email:";
+        let newEmailInput = document.createElement("input");
+        newEmailInput.type = "email";
+        newEmailInput.id = "new-email-input";
+        newInputsContainer.appendChild(newEmailLabel);
+        newInputsContainer.appendChild(newEmailInput);
+  
+        let tableContainer = document.getElementById("table-container");
+        tableContainer.parentNode.insertBefore(newInputsContainer, tableContainer);
+  
+        let confirmButton = document.createElement("button");
+        confirmButton.textContent = "Confirm Update";
+        tableContainer.parentNode.insertBefore(confirmButton, tableContainer.nextSibling);
+  
+        confirmButton.addEventListener("click", () => {
+          let newUpdatedName = document.getElementById("new-name-input").value;
+          let newUpdatedSurname = document.getElementById("new-surname-input").value;
+          let newUpdatedEmail = document.getElementById("new-email-input").value;
+  
+          if (isNameValid(newUpdatedName) && isNameValid(newUpdatedSurname) && isEmailValid(newUpdatedEmail)) {
+            nameCell.textContent = newUpdatedName;
+            surnameCell.textContent = newUpdatedSurname;
+            emailCell.textContent = newUpdatedEmail;
+  
+            newInputsContainer.remove();
+            confirmButton.remove();
+  
+            writeMessage(
+              'status-area',
+              `<p>Hai aggiornato l'utente: ${name} ${surname} ${email} con i nuovi dati: ${newUpdatedName} ${newUpdatedSurname} ${newUpdatedEmail}</p>`
+            );
+          } else {
+            writeMessage('status-area', '<p>I nuovi dati inseriti non sono validi. Riprova...</p>');
+          }
+        });
+        break;
+      }
+    }
+  
+    if (!found) {
+      writeMessage('status-area', `<p>Utente non trovato</p>`);
+    }
+  };
+  
+  
 
 const searchUser = () => {
     let name = document.getElementById("search-name").value;
